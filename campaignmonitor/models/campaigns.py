@@ -65,8 +65,7 @@ class Campaign(models.Model):
         return ids
     
     def create_draft(self, preview_recipients=[]):
-        CreateSend.api_key = settings.API_KEY
-        campaign = CSCampaign()
+        campaign = CSCampaign(auth=settings.CREDENTIALS)
         attrs = dict(
             client_id=settings.CLIENT_ID,
             subject=self.subject,
@@ -87,14 +86,13 @@ class Campaign(models.Model):
         except BadRequest, e:
             raise
         if len(preview_recipients):
-            campaign = CSCampaign(campaign_id)
+            campaign = CSCampaign(auth=settings.CREDENTIALS, campaign_id=campaign_id)
             campaign.send_preview(preview_recipients)
     
     def send(self, confirmation_email):
         if not self.cm_id:
             raise ValueError("No draft created yet")
-        CreateSend.api_key = settings.API_KEY
-        campaign = CSCampaign(self.cm_id)
+        campaign = CSCampaign(auth=settings.CREDENTIALS, campaign_id=self.cm_id)
         campaign.send(confirmation_email=confirmation_email)
         self.status = self.STATUS_SENT
         self.save()
