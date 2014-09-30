@@ -21,7 +21,8 @@ class Campaign(models.Model):
         (STATUS_DRAFT, _("draft")),
         (STATUS_SENT, _("sent")),
     )
-    cm_id = models.CharField(verbose_name=_("Campaign Monitor ID"), max_length=32, blank=True, editable=True)
+    cm_id = models.CharField(verbose_name=_("Campaign Monitor ID"), max_length=32, blank=True,
+        editable=True)
     name = models.CharField(verbose_name=_("name"), max_length=255)
     subject = models.CharField(verbose_name=_("subject"), max_length=255)
     from_name = models.CharField(verbose_name=_("from name"), max_length=255)
@@ -29,7 +30,10 @@ class Campaign(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to=Q(app_label__in=[m[0] for m in get_content_models()], model__in=[m[1] for m in get_content_models()])) # TODO: Check also the combination of app_label and model
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    status = models.PositiveSmallIntegerField(verbose_name=_("status"), choices=STATUS_CHOICES, default=STATUS_NEW, editable=False)
+    status = models.PositiveSmallIntegerField(verbose_name=_("status"), choices=STATUS_CHOICES,
+        default=STATUS_NEW, editable=False)
+    language = models.CharField(verbose_name=_("language"), max_length=15,
+        choices=settings.LANGUAGES)
     
     class Meta:
         verbose_name = _("campaign")
