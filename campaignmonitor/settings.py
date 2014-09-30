@@ -11,6 +11,10 @@ CLIENT_ID = getattr(settings, 'CAMPAIGNMONITOR_CLIENT_ID', None)
 if CLIENT_ID is None:
     warn("Please add the CAMPAIGNMONITOR_CLIENT_ID setting in your projects settings.py")
 
+CREDENTIALS = {
+    'api_key': API_KEY
+}
+
 CONTENT_MODELS = getattr(settings, 'CAMPAIGNMONITOR_CONTENT_MODELS', ('cmexample.simplenewsletter',))
 DEFAULT_TEMPLATE_HTML = getattr(settings, 'CAMPAIGNMONITOR_DEFAULT_TEMPLATE_HTML', 'campaignmonitor/campaign_base.html')
 DEFAULT_TEMPLATE_TEXT = getattr(settings, 'CAMPAIGNMONITOR_DEFAULT_TEMPLATE_TEXT', 'campaignmonitor/campaign_base.txt')

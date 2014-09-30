@@ -8,8 +8,7 @@ class Command(NoArgsCommand):
     help = 'Get the current subscriber lists from CampaignMonitor'
     
     def handle_noargs(self, **options):
-        CreateSend.api_key = settings.API_KEY
-        client = CSClient(client_id=settings.CLIENT_ID)
+        client = CSClient(auth=settings.CREDENTIALS, client_id=settings.CLIENT_ID)
         lists = client.lists()
         for list_id in lists:
             list = CSList(list_id)
