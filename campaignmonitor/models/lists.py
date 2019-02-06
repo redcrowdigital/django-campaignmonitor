@@ -12,3 +12,6 @@ class List(models.Model):
         verbose_name = _("list")
         verbose_name_plural = _("lists")
         app_label = 'campaignmonitor'
+
+    def __str__(self):
+        return self.title

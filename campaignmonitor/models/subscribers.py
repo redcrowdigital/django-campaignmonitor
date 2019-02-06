@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from .lists import List
+
+STATE_ACTIVE = 1
+STATE_INACTIVE = 2
 
 
 class Subscriber(models.Model):
-    STATE_ACTIVE = 1
-    STATE_INACTIVE = 2
     STATE_CHOICES = (
         (STATE_ACTIVE, _("active")),
         (STATE_INACTIVE, _("inactive")),
@@ -14,11 +16,15 @@ class Subscriber(models.Model):
     name = models.CharField(verbose_name=_("name"), max_length=200)
     date = models.DateTimeField(verbose_name=_("date")),
     state = models.PositiveIntegerField(verbose_name=_("state"), choices=STATE_CHOICES)
-    
+    list = models.ForeignKey(List)
+
     class Meta:
         verbose_name = _("subscriber")
         verbose_name_plural = _("subscribers")
         app_label = 'campaignmonitor'
+
+    def __str__(self):
+        return self.email_address
 
 
 class SubscriberCustomField(models.Model):

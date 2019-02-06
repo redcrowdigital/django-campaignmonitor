@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.sites.models import Site
 
 from .. import settings
@@ -29,7 +29,7 @@ class Campaign(models.Model):
     from_email = models.EmailField(verbose_name=_("email"))
     content_type = models.ForeignKey(ContentType, limit_choices_to=Q(app_label__in=[m[0] for m in get_content_models()], model__in=[m[1] for m in get_content_models()])) # TODO: Check also the combination of app_label and model
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     status = models.PositiveSmallIntegerField(verbose_name=_("status"), choices=STATUS_CHOICES,
         default=STATUS_NEW, editable=False)
     language = models.CharField(verbose_name=_("language"), max_length=15,
@@ -87,7 +87,7 @@ class Campaign(models.Model):
             self.cm_id = campaign_id
             self.status = self.STATUS_DRAFT
             self.save()
-        except BadRequest, e:
+        except BadRequest as e:
             raise
         if len(preview_recipients):
             campaign = CSCampaign(auth=settings.CREDENTIALS, campaign_id=campaign_id)
